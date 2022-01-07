@@ -1,3 +1,5 @@
+// this is basically an api, interacts between app and database
+
 // import our db model to implement the controller logics below
 import PostMessage from "../models/postMessage.js";
 
@@ -30,4 +32,16 @@ export const createPost = async (req, res) => {
     } catch (error) {
         res.status(409).json({ message: error.message });
     }
+}
+
+export const updatePost = async (req, res) => {
+    // extract id from request
+    const _id = req.params.id;
+    const post = req.body
+
+    // perform update and return new post
+    // note that post from front end doesn't have id, thus add it in
+    PostMessage.findByIdAndUpdate(_id, { ...post, _id }, { new: true }).then((newPost) => res.json(newPost)).catch((err) => res.status(404).send('No post with the id'));
+
+
 }

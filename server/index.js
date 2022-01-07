@@ -12,15 +12,15 @@ import postRoutes from './routes/posts.js';
 // initialize the express app
 const app = express();
 
-// mount post router to app
-// set starting path of all routes in posts as /posts (localhost:5000/posts)
-app.use('/posts', postRoutes);
-
 // set up bodypaser so we can properly send out requests
 // use a limit since we will be sending images 
 app.use(bodyParser.json( { limit: "30mb", extended: "true" }));
-app.use(bodyParser.json( { limit: "30mb", extended: "true" }));
+app.use(bodyParser.urlencoded( { limit: "30mb", extended: "true" }));
 app.use(cors());
+
+// mount post router to app
+// set starting path of all routes in posts as /posts (localhost:5000/posts)
+app.use('/posts', postRoutes);
 
 const CONNECTION_URL = 'mongodb+srv://yellowsynapse:john123456@cluster0.f4zw6.mongodb.net/MemoriesAppDB?retryWrites=true&w=majority';
 const PORT = process.env.PORT || 5000;
