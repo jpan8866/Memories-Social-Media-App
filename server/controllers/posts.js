@@ -42,6 +42,11 @@ export const updatePost = async (req, res) => {
     // perform update and return new post
     // note that post from front end doesn't have id, thus add it in
     PostMessage.findByIdAndUpdate(_id, { ...post, _id }, { new: true }).then((newPost) => res.json(newPost)).catch((err) => res.status(404).send('No post with the id'));
+}
 
+export const deletePost = async (req, res) => {
+    // extract id from request
+    const _id = req.params.id;
+    PostMessage.findByIdAndDelete(_id).then(() => res.json({ message: "post deleted successfully" })).catch(err => res.status(404).json({ message: "No post with this id found"}));
 
 }
