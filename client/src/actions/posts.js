@@ -48,3 +48,33 @@ export const setPostId = (id) => {
         payload: id
     };
 };
+
+export const deletePost = (id) => async (dispatch) => {
+    try {
+        // note we are not interested in the response, since we are deleting.
+        // could return the post deleted for debugging purposes if needed.
+        // send request to backend 
+        await api.deletePost(id);
+        // update front-end
+        dispatch({
+            type: actions.DELETE,
+            payload: id
+        }); 
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const likePost = (id) => async (dispatch) => {
+    try {
+        // send request to back-end to update like count
+        const res = await api.likePost(id);
+        // update front-end
+        dispatch({
+            type: actions.LIKE_POST,
+            payload: res.data
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}

@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, UPDATE, SET_ID } from "../actions/types";
+import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST } from "../actions/types";
 
 const initialState = {
     posts: [],
@@ -27,6 +27,18 @@ const postsReducer = (state=initialState, action) => {
             return {
                 ...state,
                 updateId: action.payload
+            };
+        case DELETE:
+            return {
+                ...state,
+                posts: state.posts.filter(post => post._id !== action.payload)
+            };
+        case LIKE_POST:
+            // note that the payload receive is the post with the updated number of likes.
+            // replace it directly using map
+            return {
+                ...state,
+                posts: state.posts.map(post => post._id === action.payload._id ? action.payload : post)
             }
         default: 
             return state;
