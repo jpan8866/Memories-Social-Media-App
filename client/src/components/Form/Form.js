@@ -18,9 +18,9 @@ const Form = () => {
     const formStyles = useStyles();
     const dispatch = useDispatch();
     const updateId = useSelector(state => state.posts.updateId);
-    const postToUpdate = useSelector(state => updateId ? state.posts.posts.find(post => post._id === updateId) : null);
-
     // monitor value of updateId to determine whether we want to display content in form for updating
+    const postToUpdate = useSelector(state => updateId ? state.posts.posts.find(post => post._id === updateId) : null);
+    // postToUpdate can either be post data, or be null, everytime it changes, we update the postData state (e.g. we want to display the post to update in the form during editing.)
     useEffect(() => {
         if(postToUpdate) setPostData(postToUpdate);
     }, [postToUpdate])
