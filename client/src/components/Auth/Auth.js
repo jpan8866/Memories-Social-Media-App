@@ -9,6 +9,7 @@ import Input from './Input';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
+import { signUp, signIn } from '../../actions/auth'
 import { AUTH } from '../../actions/types';
 
 function Auth() {
@@ -16,6 +17,14 @@ function Auth() {
 
     const [isSignup, setIsSignup] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
+    const [formData, setFormData] = useState({
+        firstName: '',
+        lastName: '',
+        email: '',
+        password: '',
+        confirmPassword: ''
+
+    })
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
@@ -30,12 +39,25 @@ function Auth() {
         handleShowPassword();
     };
 
-    const handleSubmit = () => {
-
+    const handleSubmit = (e) => {
+        // prevent default (reloading)
+        e.preventDefault();
+        //console.log(formData);
+        
+        // Dispatch an action to update database depending on cases below:
+        // Case 1: new user signing up
+        if(isSignup) {
+            // also pass navigate so we can navigate the page after action completed
+            dispatch(signUp(formData, navigate));
+        } else {
+            // Case 2: existing user logging in
+            dispatch(signIn(formData, navigate));
+        }
     };
 
-    const handleChange = () => {
-
+    // Works for all input fields
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
     const googleSuccess = (res) => {
@@ -73,7 +95,7 @@ function Auth() {
                     { isSignup && ( // ask for first and last name if signing up
                         <>
                             <Input name="firstName" label="First Name" handleChange={handleChange} autoFocus half />
-                            <Input name="Last Name" label="Last Name" handleChange={handleChange} half />
+                            <Input name="lastName" label="Last Name" handleChange={handleChange} half />
                         </>
                     )}
                     <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
