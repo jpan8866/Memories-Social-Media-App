@@ -1,6 +1,6 @@
 // this is basically an api, interacts between app and database
 
-// import our db model to implement the controller logics below
+// import our PostMessage db model to implement the controller logics below
 import PostMessage from "../models/postMessage.js";
 
 // get all posts

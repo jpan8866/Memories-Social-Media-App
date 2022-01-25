@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 
 // import our routes 
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/users.js';
 
 // initialize the express app
 const app = express();
@@ -21,9 +22,9 @@ app.use(bodyParser.urlencoded( { limit: "30mb", extended: "true" }));
 app.use(cors());
 
 // mount post router to app
-// set starting path of all routes in posts as /posts (localhost:5000/posts)
+// set starting path of all routes in posts as /api/posts (localhost:5000/posts)
 app.use('/api/posts', postRoutes);
-
+app.use('/api/user', userRoutes);
 const PORT = process.env.PORT || 5000;
 
 // connect to mongoDB

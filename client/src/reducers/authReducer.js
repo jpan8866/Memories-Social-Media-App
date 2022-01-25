@@ -8,6 +8,7 @@ const authReducer = (state=initialState, action) => {
     switch(action.type) {
         case AUTH:
             // Need to use JSON.stringify because objects are stored as addresses in localStorage. 
+            // we can extract this info in Navbar using JSON.parse
             localStorage.setItem('profile', JSON.stringify({ ...action?.payload }));
             console.log(action?.payload)
             return {
