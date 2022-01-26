@@ -19,6 +19,7 @@ const auth = async (req, res, next) => {
             decodedData = jwt.verify(token, 'testKey');
             // get user id
             // Note that the id is decoded from the token, which we have set as id, not _id (see users controller)
+            // we populate a field in request, so we can retrieve it in the next middleware
             req.userId = decodedData?.id;
         }
         else { // Google Auth

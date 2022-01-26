@@ -23,6 +23,7 @@ export const signIn = async (req, res) => {
         const token = jwt.sign({ email: existingUser.email, id: existingUser._id }, 'testKey', { expiresIn: "1h" });
                                                     // recall don't need to write element name if same as var name
         res.status(200).json({ result: existingUser, token: token });
+
     } catch (error) { // if token sent unsuccessfully
         res.status(500).json({ message: error.message });
         // 500 means undefined server error
@@ -43,6 +44,7 @@ export const signUp = async (req, res) => {
         // hash password
         const hashedPassword = await bcrypt.hash(password,12);
         // create user in db
+        // name it result to match with front-end
         const result = User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
         // create token
         const token = jwt.sign({ email: result.email, id: result._id }, 'testKey', { expiresIn: "1h" });

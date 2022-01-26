@@ -6,9 +6,9 @@ const postSchema = mongoose.Schema({
     creator: String,
     tags: [String],
     selectedFile: String, // this will be an image converted to a String
-    likeCount: { // we want to have a default value for the below two fields
-        type: Number,
-        default: 0
+    likes: { // we want to have a default value for the below two fields
+        type: [String], // contains id's of users who have liked this post
+        default: []
     },
     createdAt: {
         type: Date,

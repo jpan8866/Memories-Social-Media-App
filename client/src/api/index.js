@@ -1,12 +1,18 @@
 // use axios to make api calls (can also use fetch)
 import axios from 'axios';
 
-const url = '/api/posts';
-// recall that this url goes to our posts routes in backend
+//const url = '/api/posts'; // recall that this url goes to our posts routes in backend
+
+// use baseURL instead, change axios. to API. below
+const API = axios.create({ baseURL: "/api" });
+
 // used with get, this returns all posts
-export const fetchPosts = () => axios.get(url);
-export const createPost = (newPost) => axios.post(url, newPost);
-export const updatePost = (id, updatedPost) => axios.patch(`${url}/${id}`, updatedPost);
-export const deletePost = (id) => axios.delete(`${url}/${id}`);
-export const likePost = (id) => axios.patch(`${url}/${id}/likePost`);
+export const fetchPosts = () => API.get('/posts');
+export const createPost = (newPost) => API.post('/posts', newPost);
+export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
+export const deletePost = (id) => API.delete(`/posts/${id}`);
+export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 // Note that Axios automatically serializes object to JSON
+
+export const signIn = (formData) => API.post('/user/signin', formData);
+export const signUp = (formData) => API.post('/user/signup', formData); 
