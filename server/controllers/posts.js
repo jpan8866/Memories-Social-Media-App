@@ -22,7 +22,7 @@ export const createPost = async (req, res) => {
     // get the request body
     const post = req.body;
     // create item
-    const newPost = new PostMessage(post);
+    const newPost = new PostMessage({ ...post, creator: req.userId, createdAt: new Date().toISOString() });
 
     try {
         await newPost.save();

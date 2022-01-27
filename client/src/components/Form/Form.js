@@ -8,7 +8,6 @@ import { setPostId } from '../../actions/posts';
 
 const Form = () => {
     const [postData, setPostData] = useState({
-        creator: '',
         title: '',
         message: '',
         tags: '',
@@ -17,6 +16,7 @@ const Form = () => {
 
     const formStyles = useStyles();
     const dispatch = useDispatch();
+    const user = JSON.parse(localStorage.getItem('profile'));
     const updateId = useSelector(state => state.posts.updateId);
     // monitor value of updateId to determine whether we want to display content in form for updating
     const postToUpdate = useSelector(state => updateId ? state.posts.posts.find(post => post._id === updateId) : null);
@@ -27,10 +27,10 @@ const Form = () => {
 
     const handleSubmit = (e) => {
         e.preventDefault();
-        
+
         // if updateId is not null, then this is an update
-        if(updateId) dispatch(updatePost(updateId, postData));
-        else dispatch(createPost(postData));
+        if(updateId) dispatch(updatePost(updateId, { ...postData, name: user?.result?.name }));
+        else dispatch(createPost({ ...postData, name: user?.result?.name }));
         // note the current postData state is the final post to create when user clicks submit
 
         // clear the fields of the form after submitting and reset updateId
@@ -43,13 +43,23 @@ const Form = () => {
         dispatch(setPostId(null));
         // clear fields
         setPostData({
-            creator: '',
             title: '',
             message: '',
             tags: '',
             selectedFile: ''
         });
     };
+
+    // return w paper to hide form if not logged in
+    if(!user) {
+        return (
+            <Paper className={formStyles.paper}>
+                <Typography variant="h6" align="center">
+                    Please sign in to post and interact with memory cards.
+                </Typography>
+            </Paper>
+        )
+    } 
 
     return (
         <Paper className={formStyles.paper}>
@@ -58,18 +68,18 @@ const Form = () => {
             className={`${formStyles.form} ${formStyles.root}`} 
             onSubmit={handleSubmit}>
                 <Typography variant="h6">{updateId ? `Editing` : `Creating`} a Memory</Typography>
-                <TextField 
+                {/* <TextField   // No longer need creator to be filled in manually as we now have authentication
                 name="creator" 
                 variant="outlined" 
                 label="Creator" 
                 fullWidth
-                /* data from post will be stored in the state object postData, 
-                and each object key will be a specific text field */
                 value={postData.creator}
-                onChange={(e) => setPostData({ ...postData, creator: e.target.value })} />
+                onChange={(e) => setPostData({ ...postData, creator: e.target.value })} /> */}
                 {/* We need to use spread to keep other properties of state postData intact,
                 otherwise the other text fields will disappear and only creator will remain 
                 Now repeat below for the other fields */}
+                {/* data from post will be stored in the state object postData, 
+                and each object key will be a specific text field */}
                 <TextField name="title" variant="outlined" label="Title" fullWidth value={postData.title} onChange={(e) => setPostData({ ...postData, title: e.target.value })} />
                 <TextField name="message" variant="outlined" label="Message" fullWidth value={postData.message} onChange={(e) => setPostData({ ...postData, message: e.target.value })} />
                 <TextField name="tags" variant="outlined" label="Tags" fullWidth value={postData.tags} onChange={(e) => setPostData({ ...postData, tags: e.target.value.split(',') })} />

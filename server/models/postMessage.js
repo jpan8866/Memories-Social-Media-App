@@ -2,7 +2,8 @@ import mongoose from 'mongoose';
 
 const postSchema = mongoose.Schema({
     title: String,
-    message: String, 
+    message: String,
+    name: String, 
     creator: String,
     tags: [String],
     selectedFile: String, // this will be an image converted to a String
