@@ -9,6 +9,7 @@ import dotenv from 'dotenv';
 
 // import our routes 
 import postRoutes from './routes/posts.js';
+import userRoutes from './routes/users.js';
 
 // initialize the express app
 const app = express();
@@ -21,21 +22,9 @@ app.use(bodyParser.urlencoded( { limit: "30mb", extended: "true" }));
 app.use(cors());
 
 // mount post router to app
-// set starting path of all routes in posts as /posts (localhost:5000/posts)
+// set starting path of all routes in posts as /api/posts (localhost:5000/posts)
 app.use('/api/posts', postRoutes);
-
-// Serve static assets if in production (for heroku deployment)
-if (process.env.NODE_ENV === 'production') {
-    // set static folder. Once in production, the post build script will build the app and create this folder
-    app.use(express.static('client/build'));
-
-    // sendFile sends static file to client (front-end)
-    // every request except /api/items and if in production should load up index.html (built)
-    app.get('*', (req,res) => {
-        res.sendFile(path.resolve(__dirname, 'client','build','index.html'));
-    });
-}
-
+app.use('/api/user', userRoutes);
 const PORT = process.env.PORT || 5000;
 
 // connect to mongoDB
