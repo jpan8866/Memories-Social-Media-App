@@ -53,23 +53,20 @@ export const deletePost = (req, res) => {
 
 // below uses async await, but same as above .then.catch
 export const likePost = async (req, res) => {
-    // extract id from request
+    // extract post id from request
     const _id = req.params.id;
     // const { id } = req.params; // same as above
 
     // check whether auth middleware populated userId, if not then not logged
     if(!req.userId) return res.json({ message: "Unauthenticated." });
     // else we are logged in
-
-    // Note that because we are only incrementing the number of likes, 
-    // we don't need to pass in a whole new post as in updatePost
-    // first find the post and simply increment the like count
     
     try {
         const post = await PostMessage.findById(_id);
 
         // check whether user is among list of likers (array of id's of likers)
         const index = post.likes.findIndex((id) => id === String(req.userId));
+        console.log(index);
         // findIndex returns -1 if not found
         if(index === -1) {
             // not found, means user wants to like post, add id to list
@@ -77,7 +74,8 @@ export const likePost = async (req, res) => {
         }
         else {
             // user already liked, thus dislike post by filtering the current user out of the array
-            post.likes.filter((id) => id !== String(req.userId));
+            post.likes = post.likes.filter((id) => id !== String(req.userId));
+            console.log(post);
         }
 
         // update post with new one

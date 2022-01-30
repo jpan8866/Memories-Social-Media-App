@@ -2,35 +2,41 @@ import { AppBar, Typography, Button, Toolbar, Avatar } from '@material-ui/core';
 import useStyles from './styles';
 import memories from '../../images/memories.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useDispatch } from 'react-redux';
+import decode from 'jwt-decode';
 import { LOGOUT } from '../../actions/types';
 
 function Navbar() {
     const styleClasses = useStyles();
     const [user, setUser] = useState(JSON.parse(localStorage.getItem('profile')));
     //const user = JSON.parse(localStorage.getItem('profile'));
-    console.log(user);
 
     const navigate = useNavigate();
     const dispatch = useDispatch();
     // use the current location to perform side effect (whenever it changes, set user e.g. when logging in, obtaining user info from google OAuth)
     const location = useLocation();
 
-    useEffect(() => {
-        const token = user?.token;
-        
-        //JWT ...
-
-        // so that the login information changes reflect without having to refresh page
-        setUser(JSON.parse(localStorage.getItem('profile')));
-    }, [location, user?.token]);
-
-    const logout = () => {
+    const logout = useCallback(() => {
         dispatch({ type: LOGOUT });
         navigate('/auth');
         setUser(null);
-    }
+    }, [dispatch, navigate]);
+
+    useEffect(() => {
+        // log user out if token has expired
+        const token = user?.token;
+        if(token) {
+            const decodedToken = decode(token);
+            if(decodedToken.exp * 1000 < new Date().getTime()) {
+                logout();
+                console.log('logged out');
+            }
+        }
+
+        // so that the login information changes reflect without having to refresh page
+        setUser(JSON.parse(localStorage.getItem('profile')));
+    }, [location, user?.token, logout]);
 
     return (
         <AppBar className={styleClasses.appBar} position="static" color="inherit">

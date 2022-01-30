@@ -4,7 +4,6 @@ import { GoogleLogin } from 'react-google-login';
 import Icon from './Icon';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
-import { mergeClasses } from '@material-ui/styles';
 import Input from './Input';
 import { useState } from 'react';
 import { useDispatch } from 'react-redux';
@@ -75,7 +74,6 @@ function Auth() {
         } catch (error) {
             console.log(error);
         }
-        console.log(res);
     };
 
     const googleFailure = (error) => {
