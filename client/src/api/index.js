@@ -4,7 +4,7 @@ import axios from 'axios';
 //const url = '/api/posts'; // recall that this url goes to our posts routes in backend
 
 // use baseURL instead, change axios. to API. below
-const API = axios.create({ baseURL: "http://127.0.0.1:5000/api" });
+const API = axios.create({ baseURL: "https://localhost:5000/api" });
 
 // intercept all below requests and populate req with token if logged in
 API.interceptors.request.use((req) => {
