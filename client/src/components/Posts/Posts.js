@@ -1,9 +1,10 @@
 import Post from "./Post/Post";
-import useStyles from './styles';
 import { useSelector, useDispatch } from "react-redux";
 import { Grid, CircularProgress } from '@material-ui/core';
 import { useEffect } from 'react';
 import { getPosts } from "../../actions/posts";
+
+import useStyles from './styles';
 
 const Posts = () => {
     const postsStyles = useStyles();
