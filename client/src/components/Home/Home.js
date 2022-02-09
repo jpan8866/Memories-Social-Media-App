@@ -23,12 +23,29 @@ function Home() {
     const searchQuery = query.get('searchQuery');
     const navigate = useNavigate();
     const [searchBar, setSearchBar] = useState('');
+    const [tags, setTags] = useState([]);
 
-    const handleKeyPress = (e) => {
-        if(e.keyCode === 13) { // 13 means enter key
-            // search post
+    const searchPost = () => {
+        if(searchBar.trim()) {
+            // dispatch action => fetch posts relevant to search (need to modify database to search these posts)
+            // need redux, so that other component's states are automatically maintained coherently
+        }
+        else {
+            navigate('/');
         }
     }
+
+    const handleKeyPress = (e) => {
+        if(e.key === 'Enter') { // 13 means enter key
+            // search post
+            searchPost();
+            console.log('posts searched.');
+        }
+    }
+
+    const handleAddChip = (tag) => setTags([...tags, tag]);
+
+    const handleDeleteChip = (tagToDelete) => setTags(tags.filter((tag) => tag !== tagToDelete));
 
     return (
         /* use Grow for animation */
@@ -50,6 +67,15 @@ function Home() {
                                 onKeyPress={handleKeyPress} // search posts when press enter
                                 onChange={(e) => {setSearchBar(e.target.value)}}
                                 />
+                            <ChipInput 
+                                style={{ margin: '10px 0 '}}
+                                value={ tags }
+                                onAdd={handleAddChip}
+                                onDelete={handleDeleteChip}
+                                label="Search Tags"
+                                variant="outlined"
+                            />
+                            <Button onClick={searchPost} className={styleClasses.searchButton} variant="contained" color="primary">Search</Button>
                         </AppBar>
                         <Form />
                         <Paper elevation={6}>
