@@ -6,7 +6,7 @@ import axios from 'axios';
 // use baseURL instead, change axios. to API. below
 const API = axios.create({ baseURL: "http://localhost:5000/api" });
 
-// intercept all below requests and populate req with token if logged in
+// intercept all below requests and populate req with token if logged in, though not all requests will need the token (e.g. fetchPosts fetches regardless of whether logged in)
 API.interceptors.request.use((req) => {
     if(localStorage.getItem('profile')) {
         req.headers.Authorization = `Bearer ${JSON.parse(localStorage.getItem('profile')).token}`;
@@ -24,3 +24,6 @@ export const likePost = (id) => API.patch(`/posts/${id}/likePost`);
 
 export const signIn = (formData) => API.post('/user/signin', formData);
 export const signUp = (formData) => API.post('/user/signup', formData); 
+
+// pagination
+export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);

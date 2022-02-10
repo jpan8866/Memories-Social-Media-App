@@ -2,9 +2,12 @@ import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@materi
 import { useNavigate, useLocation } from 'react-router-dom';
 import { useState } from 'react';
 import ChipInput from 'material-ui-chip-input';
+
 import Posts from '../Posts/Posts';
 import Form from '../Form/Form';
 import Paginate from '../Paginate'
+import { getPostsBySearch } from '../../actions/posts';
+import { useDispatch } from 'react-redux';
 
 import useStyles from '../../styles';
 
@@ -24,11 +27,16 @@ function Home() {
     const navigate = useNavigate();
     const [searchBar, setSearchBar] = useState('');
     const [tags, setTags] = useState([]);
+    const dispatch = useDispatch();
 
     const searchPost = () => {
-        if(searchBar.trim()) {
+        if(searchBar.trim()) { // trim to ensure its not an empty space, note not in-place
             // dispatch action => fetch posts relevant to search (need to modify database to search these posts)
             // need redux, so that other component's states are automatically maintained coherently
+            dispatch(getPostsBySearch({
+                search: searchBar,
+                tags: tags.join(',') // cannot pass array thru url parameters
+            }))
         }
         else {
             navigate('/');
