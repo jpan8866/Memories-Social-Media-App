@@ -17,6 +17,23 @@ export const getPosts = async (req, res) => {
     }
 }
 
+// get posts according to query (for search function)
+export const getPostsBySearch = async (req, res) => {
+    // get data from query
+    const { searchQuery, tags } = req.query;
+
+    try {
+        // convert to regex for easier searching in mongodb
+        const title = new RegExp(searchQuery, 'i'); // i means ignore case
+        // search db
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] }); // #of: either find title or tags, recall tags was joined in front end
+        // find any tag in the array of tags that match
+        res.status(200).json(posts);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
 // adding posts
 export const createPost = async (req, res) => {
     // get the request body

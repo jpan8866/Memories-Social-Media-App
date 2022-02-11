@@ -30,7 +30,7 @@ function Home() {
     const dispatch = useDispatch();
 
     const searchPost = () => {
-        if(searchBar.trim()) { // trim to ensure its not an empty space, note not in-place
+        if(searchBar.trim() || tags) { // trim to ensure its not an empty space, note not in-place
             // dispatch action => fetch posts relevant to search (need to modify database to search these posts)
             // need redux, so that other component's states are automatically maintained coherently
             dispatch(getPostsBySearch({
