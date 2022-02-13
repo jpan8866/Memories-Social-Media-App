@@ -11,10 +11,21 @@ if(process.env.NODE_ENV === 'production') {
         applyMiddleware(thunk)
     ));
 } else { // include redux dev tools only during development, otherwise unsupporting browsers cannot render
-    store = createStore(rootReducer, initialState, compose(
-        applyMiddleware(thunk),
-        window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-    ));
+    if (window.navigator.userAgent.includes('Chrome')) {
+        store = createStore(rootReducer, initialState, compose(
+            applyMiddleware(thunk),
+            window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+        ));
+    }
+    else {
+        store = createStore(
+            rootReducer,
+            initialState,
+            compose(
+                applyMiddleware(thunk)
+            )
+        );
+    }
 }
 
 export default store;
