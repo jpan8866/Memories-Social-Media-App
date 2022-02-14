@@ -19,7 +19,10 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
         // send search query to backend and get response
         const res = await api.fetchPostsBySearch(searchQuery);
         // dispatch data
-        console.log(res.data);
+        dispatch({
+            type: actions.FETCH_SEARCH,
+            payload: res.data
+        })
     } catch (error) {
         console.log(error);
     }

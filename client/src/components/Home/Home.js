@@ -37,6 +37,8 @@ function Home() {
                 search: searchBar,
                 tags: tags.join(',') // cannot pass array thru url parameters
             }))
+            // client side routing necessary so that url can be copied and pasted to display same search results
+            navigate(`/posts/search?searchQuery=${searchBar || 'none'}&tags=${tags.join(',')}`);
         }
         else {
             navigate('/');

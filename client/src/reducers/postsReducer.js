@@ -1,4 +1,4 @@
-import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST } from "../actions/types";
+import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH } from "../actions/types";
 
 const initialState = {
     posts: [],
@@ -8,6 +8,11 @@ const initialState = {
 const postsReducer = (state=initialState, action) => {
     switch(action.type) {
         case FETCH_ALL:
+            return {
+                ...state,
+                posts: action.payload
+            };
+        case FETCH_SEARCH:
             return {
                 ...state,
                 posts: action.payload

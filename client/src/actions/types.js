@@ -8,3 +8,6 @@ export const LIKE_POST = 'LIKE_POST';
 // for auth use
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
+
+// for search use
+export const FETCH_SEARCH = 'FETCH_SEARCH';
