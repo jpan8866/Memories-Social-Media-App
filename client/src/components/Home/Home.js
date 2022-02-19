@@ -16,7 +16,7 @@ function useQuery() {
     // combine with URLSearchParams to allow getting the exact parameter you want
     return new URLSearchParams(useLocation().search);
 }
-
+// 
 function Home() {
      // Note that useStyles() returns an object containing 3 style items for appBar, heading and image
     // use them for below respective elements:
