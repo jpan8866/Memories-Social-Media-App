@@ -13,7 +13,7 @@ const Post = ({ post }) => {
     const user = JSON.parse(localStorage.getItem('profile'));
 
     return (
-        <Card className={postStyles.card}>
+        <Card className={postStyles.card} raised elevation={6}>
             <CardMedia className={postStyles.media} image={post.selectedFile} title={post.title} />
             <div className={postStyles.overlay}>
                 <Typography variant="h6">{post.name}</Typography>

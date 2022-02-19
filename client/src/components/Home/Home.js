@@ -16,7 +16,7 @@ function useQuery() {
     // combine with URLSearchParams to allow getting the exact parameter you want
     return new URLSearchParams(useLocation().search);
 }
-// 
+// gi
 function Home() {
      // Note that useStyles() returns an object containing 3 style items for appBar, heading and image
     // use them for below respective elements:
@@ -63,7 +63,7 @@ function Home() {
             <Container maxWidth="xl">
                 <Grid className={styleClasses.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
                     {/* posts take full screen for xtra small screen, and 6 out of 12 spaces on small/medium devices, since big enough to see posts */}
-                    <Grid item xs={12} sm={6} md={9}>
+                    <Grid item xs={12} sm={6} md={6} lg={9}>
                         <Posts />
                     </Grid>
                     <Grid item xs={12} sm={6} md={3}>
