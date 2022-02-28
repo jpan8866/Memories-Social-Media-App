@@ -1,11 +1,20 @@
 import { Pagination, PaginationItem } from '@material-ui/lab';
 import { Link } from 'react-router-dom';
+import { useEffect } from 'react';
+import { getPosts } from '../actions/posts';
+import { useDispatch, useSelector } from 'react-redux';
 
 import useStyles from "./paginationStyles";
 
-const Paginate = () => {
+const Paginate = ({ page }) => {
      const styleClasses = useStyles();
-    
+     const dispatch = useDispatch();
+
+     // fetch post everytime the page changes (eg switch page)
+    useEffect(() => {
+        dispatch(getPosts(page))
+    }, [page]);
+
     return (
         <Pagination
             classes = {{ ul: styleClasses.ul }}

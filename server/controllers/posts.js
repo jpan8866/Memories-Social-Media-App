@@ -6,12 +6,18 @@ import PostMessage from "../models/postMessage.js";
 // get all posts
 // note that can also use .then.catch syntax
 export const getPosts = async (req, res) => {
-    try {
-        const postMessages = await PostMessage.find();
-        console.log(postMessages);
+    const { page } = req.query;
 
-        // return json of array of all msgs we have
-        res.status(200).json(postMessages);
+    try {
+        const LIMIT = 8;
+        const startIndex = (Number(page)-1)*LIMIT; // page starts at 1, index of post, not page
+        const total = await PostMessage.countDocuments({}) // put empty filter, get all pages
+        // note that more recent documents have higher id numbers. Sort descending for most recent
+        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
+        
+        // return json of array of posts, current page, and number of pages
+        res.status(200).json({ data: posts, currentPage: Number(page), numPages: Math.ceil(total/LIMIT) });
+        // math.ceil returns upper whole number (if 7.3 pages, then need 8)
     } catch (error) {
         res.status(404).json({ message: error.message });
     }

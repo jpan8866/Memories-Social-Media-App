@@ -89,7 +89,7 @@ function Home() {
                         </AppBar>
                         <Form />
                         <Paper elevation={6}>
-                            <Paginate className={styleClasses.pagination} />
+                            <Paginate className={styleClasses.pagination} page={page}/>
                         </Paper> 
                     </Grid>
                 </Grid>

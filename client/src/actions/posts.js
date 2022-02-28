@@ -2,9 +2,10 @@ import * as api from '../api';
 // use api index file to perform all requests e.g. api.fetchPosts(). Ensures cleanliness
 import * as actions from './types';
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
     try {
-        const res = await api.fetchPosts(); // recall we're using axios
+        const res = await api.fetchPosts(page); // recall we're using axios
+        console.log(res.data) // contains num pages and number of page
         dispatch({
             type: actions.FETCH_ALL,
             payload: res.data

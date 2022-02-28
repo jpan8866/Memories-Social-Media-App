@@ -50,7 +50,7 @@ function Navbar() {
                 {user ? (
                     <div className={styleClasses.profile}>
                         <Avatar className={styleClasses.purple} alt={user.result.name} src={user.result.imageUrl}>
-                            {user.result.name.charAt(0) /* show first letter if no pic */}  
+                            {!user.result.imageUrl && user.result.name.charAt(0) /* show first letter if no pic */}  
                         </Avatar>
                         <Typography className={styleClasses.userName} variant="h6">{user.result.name}</Typography>
                         <Button variant="contained" className={styleClasses.logout} color="secondary" onClick={logout}>Logout</Button>

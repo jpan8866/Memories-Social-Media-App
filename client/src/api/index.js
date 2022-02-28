@@ -15,7 +15,7 @@ API.interceptors.request.use((req) => {
 })
 
 // used with get, this returns all posts
-export const fetchPosts = () => API.get('/posts');
+export const fetchPosts = (page) => API.get(`/posts?page=${page}`);
 export const createPost = (newPost) => API.post('/posts', newPost);
 export const updatePost = (id, updatedPost) => API.patch(`/posts/${id}`, updatedPost);
 export const deletePost = (id) => API.delete(`/posts/${id}`);
