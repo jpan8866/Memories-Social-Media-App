@@ -9,22 +9,23 @@ import useStyles from "./paginationStyles";
 const Paginate = ({ page }) => {
      const styleClasses = useStyles();
      const dispatch = useDispatch();
+     const totalPages = useSelector(state => state.posts.totalPages)
 
      // fetch post everytime the page changes (eg switch page)
     useEffect(() => {
-        dispatch(getPosts(page))
-    }, [page]);
+        if(page) dispatch(getPosts(page));
+    }, [page, dispatch]);
 
     return (
         <Pagination
             classes = {{ ul: styleClasses.ul }}
-            count = {5}
-            page = {1}
+            count = {totalPages}
+            page = {Number(page) || 1}
             variant = 'outlined'
             color = 'primary'
             renderItem={(item) => (
-                <PaginationItem {...item} component={Link} to={`/posts?page=${1}`} />
-            )}
+                <PaginationItem {...item} component={Link} to={`/posts?page=${item.page}`} />
+            )} // change the url parameter page, then home component will pass down to paginate component the page number to re-render
         />    
     )
 };

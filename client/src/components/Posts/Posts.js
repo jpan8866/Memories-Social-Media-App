@@ -8,14 +8,18 @@ import useStyles from './styles';
 
 const Posts = () => {
     const postsStyles = useStyles();
-    const dispatch = useDispatch();
-    const updateId = useSelector(state => state.posts.updateId);
+
+    // ---------- the below doesnt seem necessary....
+
+    // const dispatch = useDispatch();
+    // const updateId = useSelector(state => state.posts.updateId);
 
     // Include updateId in bracket so that everytime its value changes, the posts are fetched
     // required when we make updates to a post. 
-    useEffect(() => {
-        dispatch(getPosts());
-    }, [dispatch, updateId]);
+    // useEffect(() => {
+    //     dispatch(getPosts());
+    // }, [dispatch, updateId]);
+    // -------------
 
     const posts = useSelector(state => state.posts.posts) 
     // note 1st posts is the postsReducer, 2nd is the posts element of that state object (see postsReducer)
@@ -23,7 +27,7 @@ const Posts = () => {
     return (
         // if no posts or if still loading (since async), display spinning circle
         // else display posts
-        !posts.length ? <CircularProgress /> : (
+        !posts?.length ? <CircularProgress /> : (
             <Grid className={postsStyles.container} container alignItems="stretch" spacing={3}>
                 {posts.map((post) => (
                     // lg=3 so we have 4 per row (fraction of 12)

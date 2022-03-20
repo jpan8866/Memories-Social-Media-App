@@ -2,6 +2,8 @@ import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH } fr
 
 const initialState = {
     posts: [],
+    currentPage: 0,
+    totalPages: 0,
     updateId: null
 };
 
@@ -10,7 +12,9 @@ const postsReducer = (state=initialState, action) => {
         case FETCH_ALL:
             return {
                 ...state,
-                posts: action.payload
+                posts: action.payload.data,
+                currentPage: action.payload.currentPage,
+                totalPages: action.payload.totalPages
             };
         case FETCH_SEARCH:
             return {

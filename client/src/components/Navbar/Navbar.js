@@ -47,7 +47,7 @@ function Navbar() {
             </Link> 
             {/* In the App bar, if logged in, we want to show user avatar, username and logout button */}
             <Toolbar className={styleClasses.toolbar}>
-                {user ? (
+                {user?.result ? (
                     <div className={styleClasses.profile}>
                         <Avatar className={styleClasses.purple} alt={user.result.name} src={user.result.imageUrl}>
                             {!user.result.imageUrl && user.result.name.charAt(0) /* show first letter if no pic */}  

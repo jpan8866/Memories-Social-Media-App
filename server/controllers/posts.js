@@ -9,14 +9,14 @@ export const getPosts = async (req, res) => {
     const { page } = req.query;
 
     try {
-        const LIMIT = 8;
+        const LIMIT = 2; // number of posts per page
         const startIndex = (Number(page)-1)*LIMIT; // page starts at 1, index of post, not page
         const total = await PostMessage.countDocuments({}) // put empty filter, get all pages
         // note that more recent documents have higher id numbers. Sort descending for most recent
-        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex);
-        
+        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex); // i.e. this fetches the posts on the selected page
+         
         // return json of array of posts, current page, and number of pages
-        res.status(200).json({ data: posts, currentPage: Number(page), numPages: Math.ceil(total/LIMIT) });
+        res.status(200).json({ data: posts, currentPage: Number(page), totalPages: Math.ceil(total/LIMIT) });
         // math.ceil returns upper whole number (if 7.3 pages, then need 8)
     } catch (error) {
         res.status(404).json({ message: error.message });

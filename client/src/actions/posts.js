@@ -6,7 +6,7 @@ export const getPosts = (page) => async (dispatch) => {
     try {
         const res = await api.fetchPosts(page); // recall we're using axios
         console.log(res.data) // contains num pages and number of page
-        dispatch({
+        dispatch({ 
             type: actions.FETCH_ALL,
             payload: res.data
         });
