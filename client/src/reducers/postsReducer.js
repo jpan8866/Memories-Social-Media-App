@@ -1,14 +1,25 @@
-import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH } from "../actions/types";
+import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH, START_LOADING, END_LOADING } from "../actions/types";
 
 const initialState = {
     posts: [],
     currentPage: 0,
     totalPages: 0,
-    updateId: null
+    updateId: null,
+    isLoading: false
 };
 
 const postsReducer = (state=initialState, action) => {
     switch(action.type) {
+        case START_LOADING:
+            return {
+                ...state,
+                isLoading: true
+            }
+        case END_LOADING:
+            return {
+                ...state,
+                isLoading: false
+            }
         case FETCH_ALL:
             return {
                 ...state,
@@ -27,7 +38,7 @@ const postsReducer = (state=initialState, action) => {
                 posts: [action.payload, ...state.posts]
             };
         case UPDATE:
-            // We want to replace the post with matching id with the newly updated post
+            // replace the post with matching id with the newly updated post
             return {
                 ...state,
                 posts: state.posts.map(post => post._id === action.payload._id ? action.payload : post)

@@ -62,7 +62,7 @@ const Form = () => {
     } 
 
     return (
-        <Paper className={formStyles.paper}>
+        <Paper className={formStyles.paper} elevation={6}>
             <form autoComplete="off" 
             noValidate 
             className={`${formStyles.form} ${formStyles.root}`} 

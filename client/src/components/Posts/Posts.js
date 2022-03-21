@@ -1,8 +1,6 @@
 import Post from "./Post/Post";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { Grid, CircularProgress } from '@material-ui/core';
-import { useEffect } from 'react';
-import { getPosts } from "../../actions/posts";
 
 import useStyles from './styles';
 
@@ -23,11 +21,15 @@ const Posts = () => {
 
     const posts = useSelector(state => state.posts.posts) 
     // note 1st posts is the postsReducer, 2nd is the posts element of that state object (see postsReducer)
-    //console.log(posts);
+    const isLoading = useSelector(state => state.posts.isLoading)
+
+    // no posts to show
+    if(!posts?.length && !isLoading) return "No posts";
+
     return (
         // if no posts or if still loading (since async), display spinning circle
         // else display posts
-        !posts?.length ? <CircularProgress /> : (
+        isLoading ? <CircularProgress /> : (
             <Grid className={postsStyles.container} container alignItems="stretch" spacing={3}>
                 {posts.map((post) => (
                     // lg=3 so we have 4 per row (fraction of 12)

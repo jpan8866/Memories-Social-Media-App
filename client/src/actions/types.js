@@ -5,6 +5,10 @@ export const SET_ID = 'SET_ID';
 export const DELETE = 'DELETE';
 export const LIKE_POST = 'LIKE_POST';
 
+// for loading state use
+export const START_LOADING = 'START_LOADING';
+export const END_LOADING = 'END_LOADING';
+
 // for auth use
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';

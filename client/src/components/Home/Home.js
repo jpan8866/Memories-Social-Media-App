@@ -1,6 +1,6 @@
 import { Container, Grow, Grid, Paper, AppBar, TextField, Button } from '@material-ui/core';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import ChipInput from 'material-ui-chip-input';
 
 import Posts from '../Posts/Posts';
@@ -16,18 +16,31 @@ function useQuery() {
     // combine with URLSearchParams to allow getting the exact parameter you want
     return new URLSearchParams(useLocation().search);
 }
-// gi
+
 function Home() {
-     // Note that useStyles() returns an object containing 3 style items for appBar, heading and image
+    // Note that useStyles() returns an object containing 3 style items for appBar, heading and image
     // use them for below respective elements:
     const styleClasses = useStyles();
     const query = useQuery();
     const page = query.get('page') || 1; // if no page, then currently on page 1
-    const searchQuery = query.get('searchQuery');
+
+    // if user pastes in link with search params, get it and return the appropriate result:
+    const searchQuery = query.get('searchQuery'); // pass the search params to Paginate component, where we fetch the result
+    const tagsQuery = query.get('tags');
     const navigate = useNavigate();
     const [searchBar, setSearchBar] = useState('');
     const [tags, setTags] = useState([]);
     const dispatch = useDispatch();
+
+    useEffect(() => {
+        // check that they exist, otherwise returns empty posts array and will display "no posts" instead of loading circle
+        if(searchQuery || tagsQuery) {
+            dispatch(getPostsBySearch({
+                search: searchQuery,
+                tags: tagsQuery
+            }))
+        }
+    }, [searchQuery, tagsQuery, dispatch])
 
     const searchPost = () => {
         if(searchBar.trim() || tags) { // trim to ensure its not an empty space, note not in-place
@@ -88,9 +101,11 @@ function Home() {
                             <Button onClick={searchPost} className={styleClasses.searchButton} variant="contained" color="primary">Search</Button>
                         </AppBar>
                         <Form />
-                        <Paper elevation={6}>
-                            <Paginate className={styleClasses.pagination} page={page}/>
-                        </Paper> 
+                        {(!searchQuery && !tagsQuery) && (
+                            <Paper elevation={6}>
+                                <Paginate className={styleClasses.pagination} page={page}/>
+                            </Paper> 
+                        )}
                     </Grid>
                 </Grid>
             </Container>

@@ -9,7 +9,7 @@ export const getPosts = async (req, res) => {
     const { page } = req.query;
 
     try {
-        const LIMIT = 2; // number of posts per page
+        const LIMIT = 8; // number of posts per page
         const startIndex = (Number(page)-1)*LIMIT; // page starts at 1, index of post, not page
         const total = await PostMessage.countDocuments({}) // put empty filter, get all pages
         // note that more recent documents have higher id numbers. Sort descending for most recent

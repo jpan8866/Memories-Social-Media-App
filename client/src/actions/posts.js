@@ -4,12 +4,17 @@ import * as actions from './types';
 
 export const getPosts = (page) => async (dispatch) => {
     try {
+        // start loading state
+        dispatch({ type: actions.START_LOADING });
+
         const res = await api.fetchPosts(page); // recall we're using axios
-        console.log(res.data) // contains num pages and number of page
         dispatch({ 
             type: actions.FETCH_ALL,
             payload: res.data
         });
+        // end loading state
+        dispatch({ type: actions.END_LOADING });
+
     } catch (error) {
         console.log(error);
     }
@@ -17,6 +22,7 @@ export const getPosts = (page) => async (dispatch) => {
 
 export const getPostsBySearch = (searchQuery) => async (dispatch) => {
     try {
+        dispatch({ type: actions.START_LOADING });
         // send search query to backend and get response
         const res = await api.fetchPostsBySearch(searchQuery);
         // dispatch data
@@ -24,6 +30,8 @@ export const getPostsBySearch = (searchQuery) => async (dispatch) => {
             type: actions.FETCH_SEARCH,
             payload: res.data
         })
+        dispatch({ type: actions.END_LOADING });
+        
     } catch (error) {
         console.log(error);
     }
