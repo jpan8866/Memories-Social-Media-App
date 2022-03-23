@@ -18,26 +18,31 @@ const Post = ({ post }) => {
 
     return (
         <Card className={postStyles.card} raised elevation={6}>
-            <CardMedia className={postStyles.media} image={post.selectedFile} title={post.title} onClick={openPost}/>
-            <div className={postStyles.overlay}>
-                <Typography variant="h6">{post.name}</Typography>
-                <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
-            </div>
-            <div className={postStyles.overlay2}>
-                {/* Do not show button if current user is not creator of post */}
-                {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) &&
-                (<Button style={{color: 'white'}} size="small" onClick={() => dispatch(setPostId(post._id))}>
-                    <MoreHorizIcon fontSize="medium" />
-                </Button>)
-                }
-            </div>
-            <div className={postStyles.details}>
-                <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag}`)}</Typography>
-            </div>
-            <Typography className={postStyles.title} variant="h5" gutterBottom>{post.title}</Typography>
-            <CardContent>
-                <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
-            </CardContent> 
+            <ButtonBase className={postStyles.cardAction}>
+                <CardMedia className={postStyles.media} image={post.selectedFile} title={post.title} onClick={openPost}/>
+                
+                <div className={postStyles.overlay}>
+                    <Typography variant="h6">{post.name}</Typography>
+                    <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
+                </div>
+                
+                <div className={postStyles.overlay2}>
+                    {/* Do not show button if current user is not creator of post */}
+                    {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) &&
+                    (<Button style={{color: 'white'}} size="small" onClick={() => dispatch(setPostId(post._id))}>
+                        <MoreHorizIcon fontSize="medium" />
+                    </Button>)
+                    }
+                </div>
+                <div className={postStyles.details}>
+                    <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag}`)}</Typography>
+                </div>
+                <Typography className={postStyles.title} variant="h5" gutterBottom>{post.title}</Typography>
+                
+                <CardContent>
+                    <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
+                </CardContent> 
+            </ButtonBase>
             <CardActions className={postStyles.cardActions}>
                 <Button size="small" color="primary" disabled={!user} onClick={() => dispatch(likePost(post._id))}>
                     <Likes post={post} user={user}/>
