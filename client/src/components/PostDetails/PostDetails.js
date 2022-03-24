@@ -10,22 +10,25 @@ import useStyles from './styles';
 const PostDetails = () => {
 
     // get states
-    const { posts, isLoading } = useSelector((state) => state.posts);
+    const { post, posts, isLoading } = useSelector((state) => state.posts);
     console.log(posts);
-    console.log(posts[0]);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const postStyles = useStyles();
     const { id } = useParams();
-    console.log(posts.find(p => p.id === id))
-    const [post, setPost] = useState(posts.find(p => p.id === id))
+
+    // fetch post from BE and put in redux instead
+    // const [post] = useState(posts.find(p => p._id === id))
 
     // fetch the post to display
-    // useEffect(() => 
-    // setPost(posts[0])
-    // , [posts, post])
+    useEffect(() => {
+      dispatch(getPost(id));
+    }, [id, dispatch])
 
+    if (!post) {
+      return <p>No post!</p>;
+    }
 
     if (isLoading) {
         return (
@@ -47,10 +50,11 @@ const PostDetails = () => {
           <Divider style={{ margin: '20px 0' }} />
           <Typography variant="body1"><strong>Realtime Chat - coming soon!</strong></Typography>
           <Divider style={{ margin: '20px 0' }} />
+          <Typography variant="body1"><strong>Comments - coming soon!</strong></Typography>
           <Divider style={{ margin: '20px 0' }} />
         </div>
         <div className={postStyles.imageSection}>
-          <img className={postStyles.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} />
+          <img className={postStyles.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} size="7em"/>
         </div>
       </div>
       </Paper>

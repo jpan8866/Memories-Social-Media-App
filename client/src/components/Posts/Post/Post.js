@@ -18,8 +18,8 @@ const Post = ({ post }) => {
 
     return (
         <Card className={postStyles.card} raised elevation={6}>
-            <ButtonBase className={postStyles.cardAction}>
-                <CardMedia className={postStyles.media} image={post.selectedFile} title={post.title} onClick={openPost}/>
+            <ButtonBase className={postStyles.cardAction} onClick={openPost}>
+                <CardMedia className={postStyles.media} image={post.selectedFile} title={post.title}/>
                 
                 <div className={postStyles.overlay}>
                     <Typography variant="h6">{post.name}</Typography>

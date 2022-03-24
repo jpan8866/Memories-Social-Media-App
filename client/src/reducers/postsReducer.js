@@ -1,7 +1,8 @@
-import { FETCH_ALL, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH, START_LOADING, END_LOADING } from "../actions/types";
+import { FETCH_ALL, FETCH_POST, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH, START_LOADING, END_LOADING } from "../actions/types";
 
 const initialState = {
     posts: [],
+    post: null,
     currentPage: 0,
     totalPages: 0,
     updateId: null,
@@ -27,6 +28,11 @@ const postsReducer = (state=initialState, action) => {
                 currentPage: action.payload.currentPage,
                 totalPages: action.payload.totalPages
             };
+        case FETCH_POST:
+            return {
+                ...state,
+                post: action.payload
+            }
         case FETCH_SEARCH:
             return {
                 ...state,

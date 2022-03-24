@@ -9,6 +9,9 @@ export const LIKE_POST = 'LIKE_POST';
 export const START_LOADING = 'START_LOADING';
 export const END_LOADING = 'END_LOADING';
 
+// for PostDetails use
+export const FETCH_POST = 'FETCH_POST';
+
 // for auth use
 export const AUTH = 'AUTH';
 export const LOGOUT = 'LOGOUT';
