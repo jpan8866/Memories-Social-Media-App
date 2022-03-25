@@ -37,7 +37,7 @@ function Home() {
         if(searchQuery || tagsQuery) {
             dispatch(getPostsBySearch({
                 search: searchQuery,
-                tags: tagsQuery
+                tags: tagsQuery // already a string
             }))
         }
     }, [searchQuery, tagsQuery, dispatch])

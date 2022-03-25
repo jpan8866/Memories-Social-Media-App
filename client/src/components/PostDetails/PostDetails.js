@@ -3,7 +3,7 @@ import { Paper, Typography, CircularProgress, Divider } from '@material-ui/core'
 import { useDispatch, useSelector } from 'react-redux';
 import moment from 'moment';
 import { useParams, useNavigate } from 'react-router-dom';
-import { getPost } from '../../actions/posts';
+import { getPost, getPostsBySearch } from '../../actions/posts';
 
 import useStyles from './styles';
 
@@ -24,7 +24,15 @@ const PostDetails = () => {
     // fetch the post to display
     useEffect(() => {
       dispatch(getPost(id));
-    }, [id, dispatch])
+    }, [id, dispatch]);
+
+    // use a second useEffect to fetch posts with same tags, and populate posts in redux store
+    // re-fetch if post changes
+    useEffect(() => {
+      dispatch(getPostsBySearch({ search: 'none', tags: post?.tags.join(',') }));
+    }, [post, dispatch]);
+
+    const recommendedPosts = posts.filter(({ _id }) => _id !== post?._id); // post itself cannot be in recommended posts
 
     if (!post) {
       return <p>No post!</p>;
@@ -57,6 +65,19 @@ const PostDetails = () => {
           <img className={postStyles.media} src={post.selectedFile || 'https://user-images.githubusercontent.com/194400/49531010-48dad180-f8b1-11e8-8d89-1e61320e1d82.png'} alt={post.title} size="7em"/>
         </div>
       </div>
+      {recommendedPosts && (
+        <div className={postStyles.section}>
+          <Typography gutterBottom variant="h5">You might also like:</Typography>
+          <Divider />
+          <div className={postStyles.recommendedPosts}>
+            {recommendedPosts.map(({ title, message, name, likes, selectedFile, _id }) => (
+            <div>
+              {_id}
+            </div>
+          ))}
+          </div>
+        </div>
+      )}
       </Paper>
     );
 };

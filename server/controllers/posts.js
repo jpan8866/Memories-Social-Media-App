@@ -25,7 +25,6 @@ export const getPosts = async (req, res) => {
 
 export const getPost = async (req, res) => {
     const _id = req.params.id
-
     try {
         const post = await PostMessage.findById(_id);
         res.status(200).json(post);

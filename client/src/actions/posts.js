@@ -45,7 +45,7 @@ export const getPost = (id) => async (dispatch) => {
             type: actions.FETCH_POST,
             payload: res.data    
         });
-        dispatch( { type: actions.END_LOADING });
+        dispatch({ type: actions.END_LOADING });
     } catch (error) {
         console.log(error);
     }
