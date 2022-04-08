@@ -51,7 +51,7 @@ export const getPost = (id) => async (dispatch) => {
     }
 }
 
-export const createPost = (post) => async (dispatch) => {
+export const createPost = (post, navigate) => async (dispatch) => {
     try {
         const res = await api.createPost(post);
         // Note that Axios automatically serializes object to JSON
@@ -59,6 +59,8 @@ export const createPost = (post) => async (dispatch) => {
             type: actions.CREATE,
             payload: res.data
         });
+        // use navigate to jump to newly created post
+        navigate(`/posts/${res.data._id}`);
     } catch (error) {
         console.log(error);
     }

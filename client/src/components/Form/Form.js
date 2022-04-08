@@ -5,6 +5,7 @@ import FileBase from 'react-file-base64';
 import { useDispatch, useSelector } from 'react-redux';
 import { createPost, updatePost } from '../../actions/posts';
 import { setPostId } from '../../actions/posts';
+import { useNavigate } from 'react-router-dom';
 
 const Form = () => {
     const [postData, setPostData] = useState({
@@ -16,6 +17,7 @@ const Form = () => {
 
     const formStyles = useStyles();
     const dispatch = useDispatch();
+    const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
     const updateId = useSelector(state => state.posts.updateId);
     // monitor value of updateId to determine whether we want to display content in form for updating
@@ -30,7 +32,7 @@ const Form = () => {
 
         // if updateId is not null, then this is an update
         if(updateId) dispatch(updatePost(updateId, { ...postData, name: user?.result?.name }));
-        else dispatch(createPost({ ...postData, name: user?.result?.name }));
+        else dispatch(createPost({ ...postData, name: user?.result?.name }, navigate));
         // note the current postData state is the final post to create when user clicks submit
 
         // clear the fields of the form after submitting and reset updateId
