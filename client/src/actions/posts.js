@@ -117,3 +117,18 @@ export const likePost = (id) => async (dispatch) => {
         console.log(error);
     }
 }
+
+export const commentPost = (comment, id) => async (dispatch) => {
+    try {
+        // send to backend
+        const res = await api.commentPost(comment, id);
+        // update frontend
+        dispatch({
+            type: actions.COMMENT_POST,
+            payload: res.data
+        });
+        return res.data.comments;
+    } catch (error) {
+        console.log(error);
+    }
+}

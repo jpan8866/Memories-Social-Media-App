@@ -18,3 +18,6 @@ export const LOGOUT = 'LOGOUT';
 
 // for search use
 export const FETCH_SEARCH = 'FETCH_SEARCH';
+
+// for commenting use
+export const COMMENT_POST = 'COMMENT_POST';

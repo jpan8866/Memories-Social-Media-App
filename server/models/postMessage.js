@@ -11,6 +11,10 @@ const postSchema = mongoose.Schema({
         type: [String], // contains id's of users who have liked this post
         default: []
     },
+    comments: {
+        type: [String],
+        default: []
+    },
     createdAt: {
         type: Date,
         default: new Date()

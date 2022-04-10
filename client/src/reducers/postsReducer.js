@@ -1,4 +1,4 @@
-import { FETCH_ALL, FETCH_POST, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH, START_LOADING, END_LOADING } from "../actions/types";
+import { FETCH_ALL, FETCH_POST, CREATE, UPDATE, SET_ID, DELETE, LIKE_POST, FETCH_SEARCH, START_LOADING, END_LOADING, COMMENT_POST } from "../actions/types";
 
 const initialState = {
     posts: [],
@@ -64,6 +64,11 @@ const postsReducer = (state=initialState, action) => {
             // replace it directly using map
             return {
                 ...state,
+                posts: state.posts.map(post => post._id === action.payload._id ? action.payload : post)
+            };
+        case COMMENT_POST:
+            return {
+                ... state,
                 posts: state.posts.map(post => post._id === action.payload._id ? action.payload : post)
             }
         default: 

@@ -118,3 +118,16 @@ export const likePost = async (req, res) => {
         res.status(404).json({ message: "id not found"});
     }
 }
+
+export const commentPost = async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    // get post
+    const post = await PostMessage.findById(id)
+    // add comment in
+    post.comments.push(comment)
+    // update db
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    // send updated post back to FE
+    res.json(updatedPost);
+}

@@ -28,3 +28,6 @@ export const signUp = (formData) => API.post('/user/signup', formData);
 
 // pagination
 export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?searchQuery=${searchQuery.search || 'none'}&tags=${searchQuery.tags}`);
+
+// commenting. Note that comment is a string, convert to obj
+export const commentPost = (comment, id) => API.post(`/posts/${id}/commentPost`, { comment })
