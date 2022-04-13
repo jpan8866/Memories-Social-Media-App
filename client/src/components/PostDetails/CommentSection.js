@@ -9,6 +9,7 @@ const CommentSection = ({ post }) => {
     const [comments, setComments] = useState(post?.comments);
     const [comment, setComment] = useState('');
     const dispatch = useDispatch()
+    const commentsRef = useRef();
 
     // get user info of commenter
     const user = JSON.parse(localStorage.getItem('profile'));
@@ -20,21 +21,26 @@ const CommentSection = ({ post }) => {
         setComments(updatedComments);
         // reset comment input box
         setComment('');
+        // scroll to latest comment
+        commentsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
     return (
         <div>
-            <div className='commentsOuterContainer'>
-                <div style={{ float: 'left' }}>
+            <div className={commentStyles.commentsOuterContainer}>
+                <div className={commentStyles.commentsInnerContainer}>
                     <Typography gutterBottom variant="h6">Comments</Typography>
                     {comments.map((comment, i) => (
                         <Typography key={i} gutterBottom variant="subtitle1">
-                            {comment}
+                            {/* user name in bold */}
+                            <strong>{comment.split(': ')[0]}</strong> 
+                            {comment.split(':')[1]}
                         </Typography>
                     ))}
+                    <div ref={commentsRef} />
                 </div>
                 {user?.result?.name && 
-                    <div style={{ marginLeft:'20px', width: '70%', float: 'left' }}>
+                    <div style={{ width: '70%' }}>
                         <Typography gutterBottom variant="h6">Write a comment</Typography>
                         <TextField
                             fullWidth
