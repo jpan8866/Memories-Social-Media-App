@@ -68,7 +68,7 @@ const postsReducer = (state=initialState, action) => {
             };
         case COMMENT_POST:
             return {
-                ... state,
+                ...state,
                 posts: state.posts.map(post => post._id === action.payload._id ? action.payload : post)
             }
         default: 

@@ -12,7 +12,6 @@ const PostDetails = () => {
 
     // get states
     const { post, posts, isLoading } = useSelector((state) => state.posts);
-    console.log(posts);
     
     const dispatch = useDispatch();
     const navigate = useNavigate();

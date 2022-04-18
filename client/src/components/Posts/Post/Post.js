@@ -7,14 +7,31 @@ import { useDispatch } from 'react-redux';
 import { setPostId, deletePost, likePost } from '../../../actions/posts';
 import Likes from './Likes';
 import { useNavigate } from 'react-router-dom';
+import { useState } from 'react';
 
 const Post = ({ post }) => {
     const postStyles = useStyles();
     const dispatch = useDispatch();
     const navigate = useNavigate();
     const user = JSON.parse(localStorage.getItem('profile'));
+    const [likes, setLikes] = useState(post?.likes)
 
     const openPost = () => navigate(`/posts/${post._id}`)
+
+    // instant like button reaction (update FE while BE runs)
+    const userId = user?.result?.googleId || user?.result?._id
+    const hasLikedPost = likes.find(like => like === userId)
+    const handleLike = () => {
+        dispatch(likePost(post._id));
+        // determine like/dislike
+        if (hasLikedPost) {
+            // dislike 
+            setLikes(post.likes.filter((like) => like !== userId));
+        } else {
+            // like
+            setLikes([...post.likes, userId]); 
+        }
+    }
 
     return (
         <Card className={postStyles.card} raised elevation={6}>
@@ -44,8 +61,8 @@ const Post = ({ post }) => {
                 </CardContent> 
             </ButtonBase>
             <CardActions className={postStyles.cardActions}>
-                <Button size="small" color="primary" disabled={!user} onClick={() => dispatch(likePost(post._id))}>
-                    <Likes post={post} user={user}/>
+                <Button size="small" color="primary" disabled={!user} onClick={handleLike}>
+                    <Likes likes={likes} user={user}/>
                 </Button>
                 {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) && (
                 <Button size="small" color="primary" onClick={() => dispatch(deletePost(post._id))}>
