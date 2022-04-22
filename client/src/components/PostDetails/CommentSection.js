@@ -13,6 +13,8 @@ const CommentSection = ({ post }) => {
 
     // get user info of commenter
     const user = JSON.parse(localStorage.getItem('profile'));
+
+    // googleId
     const handleClick = async () => {
         const commentToPost = `${user.result.name}: ${comment}`;
         // dispatch w redux; we return the updated comment, need to await on the value returned (async)
