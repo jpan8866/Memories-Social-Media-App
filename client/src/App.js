@@ -20,7 +20,7 @@ const App = () => { //functional component
                     <Route path="/posts" exact element={<Home />} />
                     <Route path="/posts/search" exact element={<Home />} />
                     <Route path="/posts/:id" exact element={<PostDetails />} /> {/*post details path, :id means dynamic */}
-                    <Route path="/auth" exact element={user ? <Navigate replace to="/posts" /> : <Auth />} /> {/* if user already signed in, then /auth goes back to /posts */}
+                    <Route path="/auth" exact element={user?.result ? <Navigate replace to="/posts" /> : <Auth />} /> {/* if user already signed in, then /auth goes back to /posts */}
                 </Routes>
             </Container>   
         </BrowserRouter>

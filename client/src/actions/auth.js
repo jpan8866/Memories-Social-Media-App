@@ -17,7 +17,11 @@ export const signIn = (postData, navigate) => async (dispatch) => {
         // navigate to home once signed in
         navigate('/');
     } catch (error) {
-        console.log(error);
+        const { data } = error.response;
+        dispatch({
+            type: AUTH,
+            payload: data
+        });
     }
 }
 
@@ -32,7 +36,11 @@ export const signUp = (postData, navigate) => async (dispatch) => {
         });
         
         navigate('/');
-    } catch (error) {
-        console.log(error);
+    } catch (error) { // catch 400 response
+        const { data } = error.response;
+        dispatch({
+            type: AUTH,
+            payload: data
+        });
     }
 }
