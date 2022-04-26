@@ -108,7 +108,6 @@ export const likePost = async (req, res) => {
         else {
             // user already liked, thus dislike post by filtering the current user out of the array
             post.likes = post.likes.filter((id) => id !== String(req.userId));
-            console.log(post);
         }
 
         // update post with new one
@@ -124,10 +123,28 @@ export const commentPost = async (req, res) => {
     const { comment } = req.body;
     // get post
     const post = await PostMessage.findById(id)
-    // add comment in
+
+    // add comment
     post.comments.push(comment)
+
     // update db
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    // send updated post back to FE
+    res.json(updatedPost);
+}
+
+export const deleteComment = async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    // get post
+    const post = await PostMessage.findById(id);
+    // logic for delete: delete if in list
+    const commentToDelete = post.comments.find(c => c === comment);
+    // delete comment, check that user id's match
+    post.comments = post.comments.filter(c => c !== commentToDelete && c.split(':')[2] !== commentToDelete.split(':')[2]);
+    // update db
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    console.log(updatedPost);
     // send updated post back to FE
     res.json(updatedPost);
 }

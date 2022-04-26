@@ -118,13 +118,26 @@ export const likePost = (id) => async (dispatch) => {
     }
 }
 
-export const commentPost = (comment, id) => async (dispatch) => {
+export const commentPost = (comment, postId) => async (dispatch) => {
     try {
         // send to backend
-        const res = await api.commentPost(comment, id);
+        const res = await api.commentPost(comment, postId);
         // update frontend
         dispatch({
             type: actions.COMMENT_POST,
+            payload: res.data
+        });
+        return res.data.comments;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteComment = (comment, postId) => async (dispatch) => {
+    try {
+        const res = await api.deleteComment(comment, postId);
+        dispatch({
+            type: actions.DELETE_COMMENT,
             payload: res.data
         });
         return res.data.comments;

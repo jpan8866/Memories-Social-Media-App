@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
-import { commentPost } from '../../actions/posts';
+import { commentPost, deleteComment } from '../../actions/posts';
 import useStyles from './styles';
 
 const CommentSection = ({ post }) => {
@@ -13,10 +13,8 @@ const CommentSection = ({ post }) => {
 
     // get user info of commenter
     const user = JSON.parse(localStorage.getItem('profile'));
-
-    // googleId
     const handleClick = async () => {
-        const commentToPost = `${user.result.name}: ${comment}`;
+        const commentToPost = `${user.result.name}: ${comment}:${user.result?._id || user.result?.googleId}`;
         // dispatch w redux; we return the updated comment, need to await on the value returned (async)
         const updatedComments = await dispatch(commentPost(commentToPost, post._id));
         // immediately update the comments so we see new comment on FE (otherwise need reload)
@@ -27,17 +25,27 @@ const CommentSection = ({ post }) => {
         commentsRef.current.scrollIntoView({ behavior: 'smooth' });
     }
 
+    const handleDelete = async (comment) => {
+        const updatedComments = await dispatch(deleteComment(comment, post._id))
+        setComments(updatedComments);
+        commentsRef.current.scrollIntoView({ behavior: 'smooth' });
+    }
+
     return (
         <div>
             <div className={commentStyles.commentsOuterContainer}>
                 <div className={commentStyles.commentsInnerContainer}>
                     <Typography gutterBottom variant="h6">Comments</Typography>
                     {comments.map((comment, i) => (
-                        <Typography key={i} gutterBottom variant="subtitle1">
-                            {/* user name in bold */}
-                            <strong>{comment.split(': ')[0]}</strong> 
-                            {comment.split(':')[1]}
-                        </Typography>
+                        <div key={i}>
+                            <Typography gutterBottom variant="subtitle1">
+                                {/* user name in bold */}
+                                <strong>{comment.split(': ')[0]}</strong> 
+                                {comment.split(':')[1]}
+                            </Typography>
+                            {user && comment.split(':')[2] === (user.result?._id || user.result?.googleId) 
+                                && <Button variant="contained" color="secondary" onClick={() => handleDelete(comment)}>X</Button>}
+                        </div>
                     ))}
                     <div ref={commentsRef} />
                 </div>

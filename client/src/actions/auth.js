@@ -8,7 +8,7 @@ export const signIn = (postData, navigate) => async (dispatch) => {
         // recall with axios we can get data directly, Axios automatically serializes object to JSON
         // and axios automatically parses JSON response to js object
         const { data } = await api.signIn(postData); 
-
+        console.log(data)
         dispatch({ 
             type: AUTH, 
             payload: data 

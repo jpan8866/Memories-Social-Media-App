@@ -31,3 +31,4 @@ export const fetchPostsBySearch = (searchQuery) => API.get(`/posts/search?search
 
 // commenting. Note that comment is a string, convert to obj
 export const commentPost = (comment, id) => API.post(`/posts/${id}/commentPost`, { comment })
+export const deleteComment = (comment, id) => API.delete(`/posts/${id}/deleteComment`, { comment })
