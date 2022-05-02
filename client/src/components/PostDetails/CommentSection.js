@@ -1,4 +1,4 @@
-import { useState, useRef } from 'react';
+import { useState, useRef, useEffect } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
 import { useDispatch } from 'react-redux';
 import { commentPost, deleteComment } from '../../actions/posts';
@@ -58,6 +58,7 @@ const CommentSection = ({ post }) => {
                             label="Comment"
                             multiline
                             rows={4}
+                            value={comment}
                             onChange={(e) => setComment(e.target.value)}
                         />
                         <Button style={{ marginTop: '10px' }} fullWidth disabled={!comment} variant="contained" color="primary" onClick={handleClick}>Comment</Button>

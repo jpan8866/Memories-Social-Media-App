@@ -18,6 +18,6 @@ router.patch('/:id', auth, updatePost);
 router.delete('/:id', auth, deletePost);
 router.patch('/:id/likePost', auth, likePost);
 router.post('/:id/commentPost', auth, commentPost);
-router.delete('/:id/deleteComment', auth, deleteComment);
+router.patch('/:id/deleteComment', auth, deleteComment);
 
 export default router;

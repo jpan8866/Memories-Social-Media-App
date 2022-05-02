@@ -139,12 +139,20 @@ export const deleteComment = async (req, res) => {
     // get post
     const post = await PostMessage.findById(id);
     // logic for delete: delete if in list
-    const commentToDelete = post.comments.find(c => c === comment);
     // delete comment, check that user id's match
-    post.comments = post.comments.filter(c => c !== commentToDelete && c.split(':')[2] !== commentToDelete.split(':')[2]);
+    // use a boolean flag to prevent deleting two exact comments at once
+    var deletedOne = false;
+    post.comments = post.comments.filter(c => {
+        if (deletedOne) return true
+        if (c === comment && c?.split(':')[2] === comment?.split(':')[2]) {
+            deletedOne = true;
+            return false
+        }
+        return true
+    });
     // update db
     const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
-    console.log(updatedPost);
+    //console.log(updatedPost);
     // send updated post back to FE
     res.json(updatedPost);
 }
