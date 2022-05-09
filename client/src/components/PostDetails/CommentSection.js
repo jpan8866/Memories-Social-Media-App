@@ -1,8 +1,10 @@
 import { useState, useRef, useEffect } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
+import IconButton from '@material-ui/core/IconButton';
 import { useDispatch } from 'react-redux';
 import { commentPost, deleteComment } from '../../actions/posts';
 import useStyles from './styles';
+import DeleteIcon from '@material-ui/icons/Delete';
 
 const CommentSection = ({ post }) => {
     const commentStyles = useStyles();
@@ -38,13 +40,15 @@ const CommentSection = ({ post }) => {
                     <Typography gutterBottom variant="h6">Comments</Typography>
                     {comments.map((comment, i) => (
                         <div key={i}>
-                            <Typography gutterBottom variant="subtitle1">
+                            <Typography gutterBottom variant="subtitle1" className={commentStyles.commentText}>
                                 {/* user name in bold */}
                                 <strong>{comment.split(': ')[0]}</strong> 
                                 {comment.split(':')[1]}
                             </Typography>
                             {user && comment.split(':')[2] === (user.result?._id || user.result?.googleId) 
-                                && <Button variant="contained" color="secondary" onClick={() => handleDelete(comment)}>X</Button>}
+                                && <IconButton className={commentStyles.commentDeleteButton} aria-label="delete" size="small" onClick={() => handleDelete(comment)}>
+                                    <DeleteIcon fontSize="small" />
+                                   </IconButton>}
                         </div>
                     ))}
                     <div ref={commentsRef} />

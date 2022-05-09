@@ -50,4 +50,10 @@ export default makeStyles((theme) => ({
     overflowY: 'auto',
     marginRight: '30px',
   },
+  commentText: {
+    display: 'inline-block',
+  },
+  commentDeleteButton: {
+    marginLeft: '10px'
+  },
 }));
