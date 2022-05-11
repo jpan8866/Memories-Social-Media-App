@@ -5,15 +5,17 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
 import PostDetails from './components/PostDetails/PostDetails';
+import useStyles from './styles';
 
 const App = () => { //functional component
 
     const user = JSON.parse(localStorage.getItem('profile'));
+    const styles = useStyles();
 
     return (
         <BrowserRouter>
             {/* use container to center everything */}
-            <Container maxwidth="xl">
+            <Container className={styles.appContainer}>
                 <Navbar />
                 <Routes>
                     <Route path="/" exact element={<Navigate replace to="/posts" />} />

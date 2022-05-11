@@ -18,6 +18,9 @@ export default makeStyles((theme) => ({
         flexDirection: 'column-reverse',
       },
     },
+    appContainer: {
+      maxWidth: '100%',
+    },
     appBar: {
         borderRadius: 15,
         margin: '30px 0',

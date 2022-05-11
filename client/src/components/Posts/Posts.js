@@ -33,7 +33,7 @@ const Posts = () => {
             <Grid className={postsStyles.container} container alignItems="stretch" spacing={3}>
                 {posts.map((post) => (
                     // lg=3 so we have 4 per row (fraction of 12)
-                    <Grid key={post._id} item xs={12} sm={12} md={6} lg={4}>
+                    <Grid key={post._id} item xs={12} sm={12} md={6} lg={3}>
                         {/* send the post to the Post component as a prop */}
                         <Post post={post} />
                     </Grid>
