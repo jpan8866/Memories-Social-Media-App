@@ -38,7 +38,7 @@ const PostDetails = () => {
       return <p>No post!</p>;
     };
 
-    if (isLoading) {
+    if (isLoading || post._id !== id) { // second condition to prevent display a post previously saved in state right before re-render
         return (
         <Paper elevation={6} className={postStyles.loadingPaper}>
             <CircularProgress size="7em"/>
