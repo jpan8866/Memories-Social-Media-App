@@ -42,15 +42,6 @@ const Post = ({ post }) => {
                     <Typography variant="h6">{post.name}</Typography>
                     <Typography variant="body2">{moment(post.createdAt).fromNow()}</Typography>
                 </div>
-                
-                <div className={postStyles.overlay2}>
-                    {/* Do not show button if current user is not creator of post */}
-                    {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) &&
-                    (<Button style={{color: 'white'}} size="small" onClick={() => dispatch(setPostId(post._id))}>
-                        <MoreHorizIcon fontSize="medium" />
-                    </Button>)
-                    }
-                </div>
                 <div className={postStyles.details}>
                     <Typography variant="body2" color="textSecondary">{post.tags.map((tag) => `#${tag}`)}</Typography>
                 </div>
@@ -60,6 +51,14 @@ const Post = ({ post }) => {
                     <Typography variant="body2" color="textSecondary" component="p">{post.message}</Typography>
                 </CardContent> 
             </ButtonBase>
+             <div className={postStyles.overlay2}>
+                    {/* Do not show button if current user is not creator of post */}
+                    {(user?.result?.googleId === post?.creator || user?.result?._id === post?.creator) &&
+                    (<Button style={{color: 'white'}} size="small" onClick={() => dispatch(setPostId(post._id))}>
+                        <MoreHorizIcon fontSize="medium" />
+                    </Button>)
+                    }
+                </div>
             <CardActions className={postStyles.cardActions}>
                 <Button size="small" color="primary" disabled={!user} onClick={handleLike}>
                     <Likes likes={likes} user={user}/>

@@ -73,8 +73,8 @@ function Home() {
     return (
         /* use Grow for animation */
         <Grow in>
-            <Container maxWidth='100%' >
-                <Grid className={styleClasses.gridContainer} container justifyContent="space-between" alignItems="stretch" spacing={3}>
+            <Container className={styleClasses.appContainer}>
+                <Grid container justifyContent="space-between" alignItems="stretch" spacing={3}>
                     {/* posts take full screen for xtra small screen, and 6 out of 12 spaces on small/medium devices, since big enough to see posts */}
                     <Grid item xs={12} sm={6} md={6} lg={9}>
                         <Posts />

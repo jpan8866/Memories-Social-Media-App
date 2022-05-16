@@ -13,13 +13,13 @@ export default makeStyles((theme) => ({
       marginTop: '1rem',
       padding: '16px',
     },
+    appContainer: {
+      maxWidth: '100%'
+    },
     gridContainer: {
       [theme.breakpoints.down('xs')]: {
         flexDirection: 'column-reverse',
       },
-    },
-    appContainer: {
-      maxWidth: '100%',
     },
     appBar: {
         borderRadius: 15,
