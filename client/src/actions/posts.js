@@ -2,19 +2,56 @@ import * as api from '../api';
 // use api index file to perform all requests e.g. api.fetchPosts(). Ensures cleanliness
 import * as actions from './types';
 
-export const getPosts = () => async (dispatch) => {
+export const getPosts = (page) => async (dispatch) => {
     try {
-        const res = await api.fetchPosts(); // recall we're using axios
-        dispatch({
+        // start loading state
+        dispatch({ type: actions.START_LOADING });
+
+        const res = await api.fetchPosts(page); // recall we're using axios
+        dispatch({ 
             type: actions.FETCH_ALL,
             payload: res.data
         });
+        // end loading state
+        dispatch({ type: actions.END_LOADING });
+
     } catch (error) {
         console.log(error);
     }
 };
 
-export const createPost = (post) => async (dispatch) => {
+export const getPostsBySearch = (searchQuery) => async (dispatch) => {
+    try {
+        dispatch({ type: actions.START_LOADING });
+        // send search query to backend and get response
+        const res = await api.fetchPostsBySearch(searchQuery);
+        // dispatch data
+        dispatch({
+            type: actions.FETCH_SEARCH,
+            payload: res.data
+        })
+        dispatch({ type: actions.END_LOADING });
+        
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getPost = (id) => async (dispatch) => {
+    try {
+        dispatch({ type: actions.START_LOADING });
+        const res = await api.fetchPost(id);
+        dispatch({ 
+            type: actions.FETCH_POST,
+            payload: res.data    
+        });
+        dispatch({ type: actions.END_LOADING });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const createPost = (post, navigate) => async (dispatch) => {
     try {
         const res = await api.createPost(post);
         // Note that Axios automatically serializes object to JSON
@@ -22,6 +59,8 @@ export const createPost = (post) => async (dispatch) => {
             type: actions.CREATE,
             payload: res.data
         });
+        // use navigate to jump to newly created post
+        navigate(`/posts/${res.data._id}`);
     } catch (error) {
         console.log(error);
     }
@@ -74,6 +113,34 @@ export const likePost = (id) => async (dispatch) => {
             type: actions.LIKE_POST,
             payload: res.data
         });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const commentPost = (comment, postId) => async (dispatch) => {
+    try {
+        // send to backend
+        const res = await api.commentPost(comment, postId);
+        // update frontend
+        dispatch({
+            type: actions.COMMENT_POST,
+            payload: res.data
+        });
+        return res.data.comments;
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+export const deleteComment = (comment, postId) => async (dispatch) => {
+    try {
+        const res = await api.deleteComment(comment, postId);
+        dispatch({
+            type: actions.DELETE_COMMENT,
+            payload: res.data
+        });
+        return res.data.comments;
     } catch (error) {
         console.log(error);
     }

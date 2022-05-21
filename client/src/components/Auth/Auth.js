@@ -5,8 +5,8 @@ import Icon from './Icon';
 
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
 import Input from './Input';
-import { useState } from 'react';
-import { useDispatch } from 'react-redux';
+import { useState, useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import { signUp, signIn } from '../../actions/auth'
 import { AUTH } from '../../actions/types';
@@ -15,6 +15,7 @@ function Auth() {
     const authStyles = useStyles();
 
     const [isSignup, setIsSignup] = useState(false);
+    const [showErrorMsg, setShowErrorMsg] = useState(false);
     const [showPassword, setShowPassword] = useState(false);
     const [formData, setFormData] = useState({
         firstName: '',
@@ -26,6 +27,17 @@ function Auth() {
     })
     const dispatch = useDispatch();
     const navigate = useNavigate();
+    const { authData } = useSelector((state) => state.auth);
+
+    // clear error message when switching signin/signup or when form changed
+    useEffect(() => {
+       setShowErrorMsg(false)
+    }, [isSignup, formData])
+    
+    // display error message when get new error
+    useEffect(() => {
+       setShowErrorMsg(true)
+    }, [authData])
 
     const handleShowPassword = () => {
         // toggle state of showPassword
@@ -77,8 +89,8 @@ function Auth() {
     };
 
     const googleFailure = (error) => {
-        console.log(error)
-        console.log('Google sign in was unsuccessful. Try again.');
+        console.log(error);
+        alert('Google sign in was unsuccessful. Try again.');
     };
 
     return (
@@ -99,11 +111,12 @@ function Auth() {
                     <Input name="email" label="Email Address" handleChange={handleChange} type="email" />
                     <Input name="password" label="Password" handleChange={handleChange} type={showPassword ? "text" : "password"} handleShowPassword={handleShowPassword} />
                     {/* If this is signing up, then we need a confirm password field */}
-                    { isSignup && <Input name="confirmPassword" label="repeat Password" handleChange={handleChange} />}
+                    { isSignup && <Input name="confirmPassword" label="repeat Password" handleChange={handleChange} type={showPassword ? "text" : "password"} />}
                 </Grid>
                 <Button type="submit" fullwidth="true" variant="contained" color="primary" className={authStyles.submit}>
                     {isSignup ? "Sign Up" : "Log In"}
                 </Button>
+                {authData?.message && showErrorMsg && <Typography color="secondary" align="center" variant="body1" paragraph="true">{authData.message}</Typography>}
                 <GoogleLogin
                     clientId="204745316346-dqj9d5f1rct95bgchn5i43vvo8gjhlk1.apps.googleusercontent.com"
                     render={(renderProps) => (

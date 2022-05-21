@@ -22,10 +22,14 @@ app.use(bodyParser.urlencoded( { limit: "30mb", extended: "true" }));
 app.use(cors());
 
 // mount post router to app
-// set starting path of all routes in posts as /api/posts (localhost:5000/posts)
+// set starting path of all routes in posts as /api/posts (localhost:5000/api/posts)
 app.use('/api/posts', postRoutes);
 app.use('/api/user', userRoutes);
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 9000;
+
+app.get('/', (req, res) => {
+    res.send('Welcome to Memories App');
+});
 
 // connect to mongoDB
 mongoose.connect(process.env.CONNECTION_URL, { useNewUrlParser: true, useUnifiedTopology: true })

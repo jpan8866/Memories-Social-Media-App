@@ -45,7 +45,8 @@ export const signUp = async (req, res) => {
         const hashedPassword = await bcrypt.hash(password,12);
         // create user in db
         // name it result to match with front-end
-        const result = User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
+        const result = await User.create({ email, password: hashedPassword, name: `${firstName} ${lastName}` });
+        console.log(result);
         // create token
         const token = jwt.sign({ email: result.email, id: result._id }, 'testKey', { expiresIn: "1h" });
         // return token. Recall don't need to write obj element name if same as var name

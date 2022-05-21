@@ -6,12 +6,45 @@ import PostMessage from "../models/postMessage.js";
 // get all posts
 // note that can also use .then.catch syntax
 export const getPosts = async (req, res) => {
-    try {
-        const postMessages = await PostMessage.find();
-        console.log(postMessages);
+    const { page } = req.query;
 
-        // return json of array of all msgs we have
-        res.status(200).json(postMessages);
+    try {
+        const LIMIT = 8; // number of posts per page
+        const startIndex = (Number(page)-1)*LIMIT; // page starts at 1, index of post, not page
+        const total = await PostMessage.countDocuments({}) // put empty filter, get all pages
+        // note that more recent documents have higher id numbers. Sort descending for most recent
+        const posts = await PostMessage.find().sort({ _id: -1 }).limit(LIMIT).skip(startIndex); // i.e. this fetches the posts on the selected page
+         
+        // return json of array of posts, current page, and number of pages
+        res.status(200).json({ data: posts, currentPage: Number(page), totalPages: Math.ceil(total/LIMIT) });
+        // math.ceil returns upper whole number (if 7.3 pages, then need 8)
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+export const getPost = async (req, res) => {
+    const _id = req.params.id
+    try {
+        const post = await PostMessage.findById(_id);
+        res.status(200).json(post);
+    } catch (error) {
+        res.status(404).json({ message: error.message });
+    }
+}
+
+// get posts according to query (for search function)
+export const getPostsBySearch = async (req, res) => {
+    // get data from query
+    const { searchQuery, tags } = req.query;
+
+    try {
+        // convert to regex for easier searching in mongodb
+        const title = new RegExp(searchQuery, 'i'); // i means ignore case
+        // search db
+        const posts = await PostMessage.find({ $or: [ { title }, { tags: { $in: tags.split(',') } } ] }); // #of: either find title or tags, recall tags was joined in front end
+        // find any tag in the array of tags that match
+        res.status(200).json(posts);
     } catch (error) {
         res.status(404).json({ message: error.message });
     }
@@ -75,7 +108,6 @@ export const likePost = async (req, res) => {
         else {
             // user already liked, thus dislike post by filtering the current user out of the array
             post.likes = post.likes.filter((id) => id !== String(req.userId));
-            console.log(post);
         }
 
         // update post with new one
@@ -84,4 +116,43 @@ export const likePost = async (req, res) => {
     } catch (error) {
         res.status(404).json({ message: "id not found"});
     }
+}
+
+export const commentPost = async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    // get post
+    const post = await PostMessage.findById(id)
+
+    // add comment
+    post.comments.push(comment)
+
+    // update db
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    // send updated post back to FE
+    res.json(updatedPost);
+}
+
+export const deleteComment = async (req, res) => {
+    const { id } = req.params;
+    const { comment } = req.body;
+    // get post
+    const post = await PostMessage.findById(id);
+    // logic for delete: delete if in list
+    // delete comment, check that user id's match
+    // use a boolean flag to prevent deleting two exact comments at once
+    var deletedOne = false;
+    post.comments = post.comments.filter(c => {
+        if (deletedOne) return true
+        if (c === comment && c?.split(':')[2] === comment?.split(':')[2]) {
+            deletedOne = true;
+            return false
+        }
+        return true
+    });
+    // update db
+    const updatedPost = await PostMessage.findByIdAndUpdate(id, post, { new: true });
+    //console.log(updatedPost);
+    // send updated post back to FE
+    res.json(updatedPost);
 }

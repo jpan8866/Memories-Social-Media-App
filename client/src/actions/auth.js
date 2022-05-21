@@ -8,7 +8,7 @@ export const signIn = (postData, navigate) => async (dispatch) => {
         // recall with axios we can get data directly, Axios automatically serializes object to JSON
         // and axios automatically parses JSON response to js object
         const { data } = await api.signIn(postData); 
-
+        console.log(data)
         dispatch({ 
             type: AUTH, 
             payload: data 
@@ -17,7 +17,11 @@ export const signIn = (postData, navigate) => async (dispatch) => {
         // navigate to home once signed in
         navigate('/');
     } catch (error) {
-        console.log(error);
+        const { data } = error.response;
+        dispatch({
+            type: AUTH,
+            payload: data
+        });
     }
 }
 
@@ -32,7 +36,11 @@ export const signUp = (postData, navigate) => async (dispatch) => {
         });
         
         navigate('/');
-    } catch (error) {
-        console.log(error);
+    } catch (error) { // catch 400 response
+        const { data } = error.response;
+        dispatch({
+            type: AUTH,
+            payload: data
+        });
     }
 }
