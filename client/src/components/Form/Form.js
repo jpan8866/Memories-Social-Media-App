@@ -39,7 +39,7 @@ const Form = () => {
         clear();
     };
 
-    // put th setPostId in clear() so that we can click clear to cancel edit
+    // put the setPostId in clear() so that we can click clear to cancel edit
     const clear = () => {
         // set updateId back to null after updating
         dispatch(setPostId(null));

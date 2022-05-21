@@ -1,4 +1,4 @@
-import { useState, useRef, useEffect } from 'react';
+import { useState, useRef } from 'react';
 import { Typography, TextField, Button } from '@material-ui/core';
 import IconButton from '@material-ui/core/IconButton';
 import { useDispatch } from 'react-redux';
