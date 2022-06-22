@@ -4,7 +4,7 @@ import axios from 'axios';
 //const url = '/api/posts'; // recall that this url goes to our posts routes in backend
 
 // use baseURL instead, change axios. to API. below
-const API = axios.create({ baseURL: "https://memories-app-auth-backend.herokuapp.com/api" });
+const API = axios.create({ baseURL: "http://localhost:9000/api" });
 
 // intercept all below requests and populate req with token if logged in, though not all requests will need the token (e.g. fetchPosts fetches regardless of whether logged in)
 API.interceptors.request.use((req) => {

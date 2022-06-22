@@ -5,6 +5,7 @@ import Navbar from './components/Navbar/Navbar';
 import Home from './components/Home/Home';
 import Auth from './components/Auth/Auth';
 import PostDetails from './components/PostDetails/PostDetails';
+import ChatApp from './components/Auth/Chat/ChatApp';
 import useStyles from './styles';
 
 const App = () => { //functional component
@@ -23,6 +24,7 @@ const App = () => { //functional component
                     <Route path="/posts/search" exact element={<Home />} />
                     <Route path="/posts/:id" exact element={<PostDetails />} /> {/*post details path, :id means dynamic */}
                     <Route path="/auth" exact element={user ? <Navigate replace to="/posts" /> : <Auth />} /> {/* if user already signed in, then /auth goes back to /posts */}
+                    <Route path="/messenging" exact element={<ChatApp />} />
                 </Routes>
             </Container>   
         </BrowserRouter>

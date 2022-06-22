@@ -1,4 +1,5 @@
 import { AppBar, Typography, Button, Toolbar, Avatar } from '@material-ui/core';
+import ForumIcon from '@material-ui/icons/Forum'
 import useStyles from './styles';
 import nightKidz from '../../images/night_kidz.png';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
@@ -48,6 +49,10 @@ function Navbar() {
             <Toolbar className={styleClasses.toolbar}>
                 {user?.result ? ( 
                     <div className={styleClasses.profile}>
+                        <Button component={Link} to="/messenging" variant="contained" size="medium" color='primary'>
+                            <ForumIcon size="large"/>
+                            &nbsp;Chat
+                        </Button>
                         <Avatar className={styleClasses.purple} alt={user.result.name} src={user.result.imageUrl}>
                             {!user.result.imageUrl && user.result.name.charAt(0) /* show first letter if no pic */}  
                         </Avatar>
